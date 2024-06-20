@@ -235,7 +235,7 @@ internal sealed partial class GrpcCall<TRequest, TResponse> : GrpcCall, IGrpcCal
             }
         }
 
-        HttpResponse?.Dispose();
+        _ = HttpResponse?.DisposeAsync();
         ClientStreamReader?.Dispose();
         ClientStreamWriter?.Dispose();
 
@@ -436,7 +436,7 @@ internal sealed partial class GrpcCall<TRequest, TResponse> : GrpcCall, IGrpcCal
 
             // Cancellation token won't send RST_STREAM if HttpClient.SendAsync is complete.
             // Dispose HttpResponseMessage to send RST_STREAM to server for in-progress calls.
-            HttpResponse?.Dispose();
+            _ = HttpResponse?.DisposeAsync();
 
             // Canceling call will cancel pending writes to the stream
             ClientStreamWriter?.WriteStreamTcs.TrySetCanceled();
